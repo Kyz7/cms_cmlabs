@@ -1,0 +1,27 @@
+services:
+  cmsapp:
+    build: .
+    container_name: cmsapp
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.docker
+    depends_on:
+      - postgres
+    restart: on-failure
+
+  postgres:
+    image: postgres:15
+    container_name: cms-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cmsdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  postgres_data:
